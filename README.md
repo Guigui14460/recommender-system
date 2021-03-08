@@ -34,7 +34,7 @@ $ pipenv --rm
 
 ## Authors
 - [KASSA Rina](https://github.com/rinakassa7)
-- OUNESLI Melissa
+- [OUNESLI Melissa](https://github.com/Melissa-Ou)
 - [URAZOV Zhandos](https://github.com/zhandu)
 - [LETELLIER Guillaume](https://github.com/Guigui14460)
 
