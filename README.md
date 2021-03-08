@@ -23,10 +23,26 @@ $ pipenv install
 ```
 
 ## Commands
-- To launch a shell :
+- To enter in the virtual environment :
 ```shell
 $ pipenv shell
 ```
+
+- To launch a Python shell inside the virtual environment :
+```shell
+(test-rnrvitb) $ python
+```
+
+- To quit the virtual environment :
+  - Under Unix system :
+  ```shell
+  $ deactivate
+  ```
+  - Under Windows system :
+  ```powershell
+  $ exit
+  ```
+
 - To remove the virtual environment :
 ```shell
 $ pipenv --rm
