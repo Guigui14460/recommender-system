@@ -87,7 +87,7 @@ class ProcessData:
         self.movies['description'] = self.movies['overview'] + \
             self.movies['tagline']
         self.movies['description'] = self.movies['description'].fillna(
-            '').apply(lambda x: str.lower(x.replace(" ", "")))
+            '').apply(lambda x: str.lower(x))
         print("Data successfully transformed")
 
     def __transform_precessed_data(self) -> None:
