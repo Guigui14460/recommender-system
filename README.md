@@ -22,6 +22,8 @@ Launch this command (at the root of the project directory) to install packages :
 $ pipenv install
 ```
 
+After, download the movie dataset [here](https://www.kaggle.com/rounakbanik/the-movies-dataset) and put all `.csv` files in a `data` folder at the root of the project.
+
 ## Commands
 - To enter in the virtual environment :
 ```shell
