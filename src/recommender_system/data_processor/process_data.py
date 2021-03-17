@@ -86,7 +86,8 @@ class ProcessData:
         self.movies['tagline'] = self.movies['tagline'].fillna('')
         self.movies['description'] = self.movies['overview'] + \
             self.movies['tagline']
-        self.movies['description'] = self.movies['description'].fillna('')
+        self.movies['description'] = self.movies['description'].fillna(
+            '').apply(lambda x: str.lower(x.replace(" ", "")))
         print("Data successfully transformed")
 
     def __transform_precessed_data(self) -> None:
@@ -122,7 +123,9 @@ class ProcessData:
         self.movies.drop(
             inplace=True, index=self.movies.index[self.movies['vote_average'].isnull()])
         self.movies.drop(inplace=True, columns=["belongs_to_collection", "status", "budget",
-                                                "original_title", "revenue", "video", "original_language", "release_date"])
+                                                "original_title", "revenue", "video", "release_date", "adult",
+                                                "homepage", "poster_path", "production_countries", "production_companies",
+                                                "runtime", "spoken_languages"])
         print("Null and duplicates rows/columns successfully deleted -> shape :",
               self.movies.shape)
 
@@ -165,8 +168,6 @@ class ProcessData:
         self.movies['cast'] = self.movies['cast'].apply(literal_eval)
         self.movies['crew'] = self.movies['crew'].apply(literal_eval)
         self.movies['keywords'] = self.movies['keywords'].apply(literal_eval)
-        self.movies['cast_size'] = self.movies['cast'].apply(lambda x: len(x))
-        self.movies['crew_size'] = self.movies['crew'].apply(lambda x: len(x))
         self.movies['director'] = self.movies['crew'].apply(get_director)
         self.movies['cast'] = self.movies['cast'].apply(
             lambda x: [i['name'] for i in x] if isinstance(x, list) else [])
@@ -174,14 +175,13 @@ class ProcessData:
             lambda x: x[:4] if len(x) >= 4 else x)
         self.movies['keywords'] = self.movies['keywords'].apply(
             lambda x: [i['name'] for i in x] if isinstance(x, list) else [])
+        self.movies.drop(inplace=True, columns=["crew"])
         # self.movies['cast'] = self.movies['cast'].apply(lambda x: [i.replace(" ", "") for i in x])
         # self.movies['director'] = self.movies['director'].astype('str').apply(lambda x: x.replace(" ", ""))
         print("Keywords and Casts files successfully computed")
 
     def __convert_data_to_other_types2(self) -> None:
         self.movies['movie_id'] = self.movies['movie_id'].astype('int')
-        self.movies['cast_size'] = self.movies['cast_size'].astype('int')
-        self.movies['crew_size'] = self.movies['crew_size'].astype('int')
         print("Columns successfully converted")
 
     def __save_model(self, number_of_lines_to_save: int = constants.NUMBER_OF_MOVIE_TO_SAVE, order_by: str = constants.ORDER_BY_FOR_PROCESSED_MOVIES, ascending: bool = constants.ASCENDING_PROCESSED_DATA) -> None:
