@@ -136,6 +136,7 @@ class ProcessData:
             'float')
         self.movies['popularity'] = self.movies['popularity'].astype('float')
         self.movies['id'] = self.movies['id'].astype('int')
+        self.movies['tagline'] = self.movies['tagline'].fillna('')
         print("Columns successfully converted")
 
     def __load_and_compute_links_file(self) -> None:
@@ -174,7 +175,7 @@ class ProcessData:
         self.movies['cast'] = self.movies['cast'].apply(
             lambda x: x[:4] if len(x) >= 4 else x)
         self.movies['keywords'] = self.movies['keywords'].apply(
-            lambda x: [i['name'] for i in x] if isinstance(x, list) else [])
+            lambda x: [i['name'].replace("\xa0", "") for i in x] if isinstance(x, list) else [])
         self.movies.drop(inplace=True, columns=["crew"])
         # self.movies['cast'] = self.movies['cast'].apply(lambda x: [i.replace(" ", "") for i in x])
         # self.movies['director'] = self.movies['director'].astype('str').apply(lambda x: x.replace(" ", ""))
