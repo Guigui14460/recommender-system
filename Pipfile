@@ -7,6 +7,9 @@ name = "pypi"
 numpy = "*"
 pandas = "*"
 scikit-learn = "*"
+surprise = "*"
+nltk = "*"
+h5py = "*"
 
 [dev-packages]
 autopep8 = "*"
