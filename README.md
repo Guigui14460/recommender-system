@@ -1,4 +1,4 @@
-# Todo App
+# Recommender system
 
 University project proposed by our professors as part of an annual project (starting and ending in March) of our 3rd year in computer science degree at the University of Caen Normandy. The goal of this subject is to make us discover how we work in real life in computer science (communication with a customer, project development, etc).
 

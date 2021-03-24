@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 from recommender_system import constants
+from .ratings_process import RatingsProcess
 
 
 def get_director(x):
@@ -92,6 +93,26 @@ class ProcessData:
             exit(1)
         self.data_directory = data_directory
         self.is_processed_data = data_directory == constants.PROCESSED_DATA_DIRECTORY
+        self.ratings = RatingsProcess().data
+
+    def get_ratings_by_user_id(self, user_id: int) -> pd.DataFrame:
+        """Gets all ratings of a particular user.
+
+        Paramters:
+        ----------
+            user_id : int
+                user identifiant
+
+        Returns:
+        --------
+            user_ratings : pd.DataFrame
+                all ratings of the `user_id` user
+        """
+        user_ratings = pd.merge(
+            self.ratings, self.movies, on="movie_id", how='inner')
+        user_ratings = user_ratings[[
+            'user_id', 'movie_id', 'rating', 'title']]
+        return user_ratings[user_ratings['user_id'] == user_id].sort_values(by="rating", ascending=False)
 
     def __get_file(self, filename: str) -> str:
         """Get the filename.

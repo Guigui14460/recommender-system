@@ -1,4 +1,5 @@
 import re
+from typing import Union
 
 import h5py
 import numpy as np
@@ -29,23 +30,23 @@ class ContentBasedRecommender(Recommender):
                 boolean to know if we need to analyze the data or not
         """
         super().__init__()
-        self.data = data.movies
-        self.__convert_data(self.data, "keywords")
-        self.__convert_data(self.data, "cast")
-        self.__convert_data(self.data, "director")
-        self.data.director = self.data.director.apply(lambda x: str.lower("".join(
+        self.data = data
+        self.__convert_data(self.data.movies, "keywords")
+        self.__convert_data(self.data.movies, "cast")
+        self.__convert_data(self.data.movies, "director")
+        self.data.movies.director = self.data.movies.director.apply(lambda x: str.lower("".join(
             x.split(" "))).replace(".", "").replace("-", "").replace("'", "").replace(",", ""))
-        self.__convert_data(self.data, "genres")
+        self.__convert_data(self.data.movies, "genres")
         print("Data converted")
 
         self.keywords_df = self.__concat_list_data_to_single_df(
-            self.data.keywords, "keyword")
+            self.data.movies.keywords, "keyword")
         self.cast_df = self.__concat_list_data_to_single_df(
-            self.data.cast, "cast")
+            self.data.movies.cast, "cast")
         self.directors_df = self.__concat_list_data_to_single_df(
-            self.data.director, "director")
+            self.data.movies.director, "director")
         self.genres_df = self.__concat_list_data_to_single_df(
-            self.data.genres, "genre")
+            self.data.movies.genres, "genre")
         print("Dataframes for TF-iDF vectorizer successfully created")
 
         self.cosine_sim = None
@@ -57,15 +58,40 @@ class ContentBasedRecommender(Recommender):
             self.__load_model(filename_input=filename)
         print("Done !")
 
-        self.titles = self.data['title']
-        self.indices = pd.Series(self.data.index, index=self.data['title'])
+        self.titles = self.data.movies['title']
+        self.indices = pd.Series(
+            self.data.movies.index, index=self.data.movies['title'])
 
-    def recommend(self, title: str, nrows: int = None, **kwargs) -> pd.DataFrame:
+    # def recommend(self, title: str, nrows: int = None, **kwargs) -> pd.DataFrame:
+    #     """Recommends movies based in content and metadata.
+
+    #     Parameters:
+    #     -----------
+    #         title : str
+    #             title of the movie
+    #         nrows : int = None
+    #             number of rows to return
+
+    #     Returns:
+    #     --------
+    #         the recommended movies in a dataframe
+    #     """
+    #     idx = self.indices[title]
+    #     sim_scores = list(enumerate(self.cosine_sim[idx]))
+    #     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    #     sim_scores = sim_scores[1:21]
+    #     movie_indices = [i[0] for i in sim_scores]
+    #     movies = pd.DataFrame(
+    #         self.data[self.data.title.isin(
+    #             self.titles.iloc[movie_indices])][['movie_id', 'title']])
+    #     return movies if nrows == None else movies.head(nrows)
+
+    def recommend(self, user_id: int, nrows: int = None, **kwargs) -> Union[pd.DataFrame, pd.Series]:
         """Recommends movies based in content and metadata.
 
         Parameters:
         -----------
-            title : str
+            user_id : int
                 title of the movie
             nrows : int = None
                 number of rows to return
@@ -74,14 +100,21 @@ class ContentBasedRecommender(Recommender):
         --------
             the recommended movies in a dataframe
         """
-        idx = self.indices[title]
-        sim_scores = list(enumerate(self.cosine_sim[idx]))
-        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[1:21]
-        movie_indices = [i[0] for i in sim_scores]
-        movies = pd.DataFrame(
-            self.data[self.data.title.isin(
-                self.titles.iloc[movie_indices])][['movie_id', 'title']])
+        movie_ids = kwargs.get(
+            "ratings", self.data.get_ratings_by_user_id(user_id))
+        movies = self.data.movies.reset_index()
+        movies['estimations'] = 0.0
+        for i in movie_ids.index:
+            idx = self.indices[movie_ids['title'][i]]
+            similarity_score = np.array(list(enumerate(self.cosine_sim[idx])))
+            if similarity_score[:, 0].shape < movies.index.values.shape:
+                for j in range(similarity_score.shape[0]):
+                    movies['estimations'] += similarity_score[:, 1][j]
+            else:
+                movies['estimations'] += similarity_score[:, 1]
+        # movies['estimations'] /= 2
+        movies.sort_values(by="estimations", ascending=False, inplace=True)
+        movies = movies[~movies.movie_id.isin(movie_ids.movie_id)]
         return movies if nrows == None else movies.head(nrows)
 
     def __convert_data(self, data: pd.DataFrame, column: str) -> None:
@@ -137,9 +170,9 @@ class ContentBasedRecommender(Recommender):
                 filename of the file where to save the cosine similarity
         """
         tf = TfidfVectorizer(analyzer='word', min_df=0, stop_words='english')
-        data_for_tfidf = self.data.description + " " + \
-            self.data.director + " " + self.data.cast
-        data_for_tfidf += " " + self.data.keywords + " " + self.data.genres
+        data_for_tfidf = self.data.movies.description + " " + \
+            self.data.movies.director + " " + self.data.movies.cast
+        data_for_tfidf += " " + self.data.movies.keywords + " " + self.data.movies.genres
         tfidf_matrix = tf.fit_transform(data_for_tfidf)
         self.__put_weights(tfidf_matrix, tf)
         # similarity of one movies compare to others movies

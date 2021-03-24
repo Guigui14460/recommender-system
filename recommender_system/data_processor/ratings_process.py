@@ -18,4 +18,6 @@ class RatingsProcess:
         self.data = pd.read_csv(
             f'{constants.DATA_DIRECTORY}/{ratings_filename}')
         self.data["movie_id"] = self.data["movieId"]
-        self.data.drop(inplace=True, columns=["timestamp", "movieId"])
+        self.data["user_id"] = self.data["userId"]
+        self.data.drop(inplace=True, columns=[
+                       "timestamp", "movieId", "userId"])
