@@ -79,7 +79,9 @@ class ContentBasedRecommender(Recommender):
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
         sim_scores = sim_scores[1:21]
         movie_indices = [i[0] for i in sim_scores]
-        movies = self.titles.iloc[movie_indices]
+        movies = pd.DataFrame(
+            self.data[self.data.title.isin(
+                self.titles.iloc[movie_indices])][['movie_id', 'title']])
         return movies if nrows == None else movies.head(nrows)
 
     def __convert_data(self, data: pd.DataFrame, column: str) -> None:
@@ -197,5 +199,4 @@ class ContentBasedRecommender(Recommender):
                 filename of the file used to loads the cosine similarity between movies
         """
         with h5py.File(filename_input, "r") as f:
-            print("Keys :", f.keys())
             self.cosine_sim = np.array(f["cosime_sim"])
