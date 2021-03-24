@@ -14,3 +14,6 @@ print(data.movies.head())
 recommender = ContentBasedRecommender(data, "processed_movies_similarity.h5")
 print(recommender.recommend("Star Wars", nrows=20))
 print(recommender.recommend("Toy Story", nrows=20))
+
+
+# TODO: select user from 1 to 671
