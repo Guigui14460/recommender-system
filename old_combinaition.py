@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-from nltk.corpus import wordnet
 from surprise import Reader, Dataset, SVD
 from surprise.model_selection import cross_validate
 

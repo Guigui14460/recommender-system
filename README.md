@@ -21,6 +21,12 @@ Launch this command (at the root of the project directory) to install packages :
 ```shell
 $ pipenv install
 ```
+Put in the root of the project, a directory named `data` with the all CSV files of this [Kaggle competition](https://www.kaggle.com/rounakbanik/the-movies-dataset).
+You need to launch this file to generate new CSV file and save recommender models to use them later :
+```
+(test-rnrvitb) $ python main_process_data.py
+(test-rnrvitb) $ python main_save_models.py
+```
 
 After, download the movie dataset [here](https://www.kaggle.com/rounakbanik/the-movies-dataset) and put all `.csv` files in a `data` folder at the root of the project.
 
@@ -34,6 +40,12 @@ $ pipenv shell
 ```shell
 (test-rnrvitb) $ python
 ```
+
+- To launch the site :
+```shell
+(test-rnrvitb) $ python -m http.server --cgi
+```
+And go at this link to interact with it : http://localhost:8000/cgi-bin/index.py
 
 - To quit the virtual environment :
   - Under Unix system :
