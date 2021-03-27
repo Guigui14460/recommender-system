@@ -1,0 +1,24 @@
+form, h1, h2, .dataframe {
+	margin: 30px auto;
+	text-align: center;
+}
+
+input {
+	padding: 5px 10px;
+	margin: 10px;
+}
+
+.dataframe {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.dataframe thead th {
+	font-weight: bold;
+	background-color: #ccc;
+}
+
+.dataframe th, td {
+	border: 1px solid black;
+	padding: 10px 20px;
+}
