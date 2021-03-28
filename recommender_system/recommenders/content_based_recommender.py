@@ -61,6 +61,7 @@ class ContentBasedRecommender(Recommender):
         self.titles = self.data.movies['title']
         self.indices = pd.Series(
             self.data.movies.index, index=self.data.movies['title'])
+        print("Content/metadata based initialized")
 
     def recommend(self, user_id: int, nrows: int = None, **kwargs) -> Union[pd.DataFrame, pd.Series]:
         """Recommends movies based in content and metadata.
