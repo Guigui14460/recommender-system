@@ -22,7 +22,7 @@ Launch this command (at the root of the project directory) to install packages :
 $ pipenv install
 ```
 Put in the root of the project, a directory named `data` at the root of the project with the all CSV files of this [Kaggle competition](https://www.kaggle.com/rounakbanik/the-movies-dataset).
-You need to launch this file to generate new CSV file and save recommender models to use them later :
+You need to launch those files to generate new CSV file and save recommender models to use them later :
 ```
 $ pipenv shell
 (test-rnrvitb) $ python main_process_data.py
@@ -40,17 +40,16 @@ $ pipenv shell
 (test-rnrvitb) $ python
 ```
 
-For POSIX machine, you need to change mode of the file to authorize their execution :
-```shell
-$ chmod a+x cgi-bin/index.py
-$ chmod a+x cgi-bin/post.py
-```
-
 - To launch the site :
 ```shell
-(test-rnrvitb) $ python -m http.server --cgi
+(test-rnrvitb) $ python server.py
 ```
-And go at this link to interact with it : http://localhost:8000/cgi-bin/index.py
+And go at this link to interact with it : http://127.0.0.1:5000/
+
+- Or, you can execute the recommender in the console with this command :
+```shell
+(test-rnrvitb) $ python main.py
+```
 
 - To quit the virtual environment :
   - Under Unix system :

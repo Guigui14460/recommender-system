@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Système de recommandation</h1>
+{% if error %}
+	<p class="error">{{ error }}</p>
+{% endif %}
+<form accept-charset="utf-8" method="post" action="/recommend">
+	<p>
+		<label for="user_id">Choisissez un utilisateur (ID utilisateur entre 1 et 671): </label><br>
+		<input type="text" name="user_id" id="user_id" placeholder="ID utilisateur"><br>
+		<label for="nb_results">Combien de films voulez-vous avoir en recommandation ? (1+)</label><br>
+		<input type="number" name="nb_results" id="nb_results" min="1" value="20"><br>
+		<input type="submit" value="Afficher les recommandations">
+	</p>
+</form>
+{% endblock %}

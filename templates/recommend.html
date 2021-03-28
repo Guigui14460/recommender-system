@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+- résultats
+{% endblock %}
+
+{% block content %}
+<h1>Résultat du système de recommendation</h1>
+
+<h2>Films notés par l'utilisateur {{ user_id }}</h2>
+{{ rated_movies|safe }}
+
+<h2>Films recommandés à l'utilisateur {{ user_id }}</h2>
+{{ recommended_movies|safe }}
+{% endblock %}
