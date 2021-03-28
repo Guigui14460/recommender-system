@@ -20,10 +20,10 @@ html = """<!DOCTYPE html>
 		
 		<form accept-charset="utf-8" method="post" action="post.py">
 			<p>
-                <label for="query">Qu'est-ce qui vous intéresse ?</label><br>
-				<input type="text" name="query" id="query" placeholder="Tapez des mots-clés..."><br>
+                <label for="user_id">Choisissez un utilisateur (ID utilisateur entre 1 et 671): </label><br>
+				<input type="text" name="user_id" id="user_id" placeholder="ID utilisateur"><br>
                 <label for="nb_results">Combien de films voulez-vous avoir en recommandation ? (1+)</label><br>
-                <input type="number" name="nb_results" id="nb_results" min="1" value="5"><br>
+                <input type="number" name="nb_results" id="nb_results" min="1" value="20"><br>
 				<input type="submit" value="Afficher les recommandations">
 			</p>
 		</form>
