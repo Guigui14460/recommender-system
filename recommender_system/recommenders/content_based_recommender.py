@@ -62,30 +62,6 @@ class ContentBasedRecommender(Recommender):
         self.indices = pd.Series(
             self.data.movies.index, index=self.data.movies['title'])
 
-    # def recommend(self, title: str, nrows: int = None, **kwargs) -> pd.DataFrame:
-    #     """Recommends movies based in content and metadata.
-
-    #     Parameters:
-    #     -----------
-    #         title : str
-    #             title of the movie
-    #         nrows : int = None
-    #             number of rows to return
-
-    #     Returns:
-    #     --------
-    #         the recommended movies in a dataframe
-    #     """
-    #     idx = self.indices[title]
-    #     sim_scores = list(enumerate(self.cosine_sim[idx]))
-    #     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    #     sim_scores = sim_scores[1:21]
-    #     movie_indices = [i[0] for i in sim_scores]
-    #     movies = pd.DataFrame(
-    #         self.data[self.data.title.isin(
-    #             self.titles.iloc[movie_indices])][['movie_id', 'title']])
-    #     return movies if nrows == None else movies.head(nrows)
-
     def recommend(self, user_id: int, nrows: int = None, **kwargs) -> Union[pd.DataFrame, pd.Series]:
         """Recommends movies based in content and metadata.
 
@@ -112,7 +88,6 @@ class ContentBasedRecommender(Recommender):
                     movies['estimations'] += similarity_score[:, 1][j]
             else:
                 movies['estimations'] += similarity_score[:, 1]
-        # movies['estimations'] /= 2
         movies.sort_values(by="estimations", ascending=False, inplace=True)
         movies = movies[~movies.movie_id.isin(movie_ids.movie_id)]
         return movies if nrows == None else movies.head(nrows)
