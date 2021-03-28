@@ -82,7 +82,8 @@ class ContentBasedRecommender(Recommender):
         movies['estimations'] = 0.0
         for i in movie_ids.index:
             idx = self.indices[movie_ids['title'][i]]
-            similarity_score = np.array(list(enumerate(self.cosine_sim[idx])))
+            similarity_score = np.array(
+                list(enumerate(self.cosine_sim[idx])), dtype="object")
             if similarity_score[:, 0].shape < movies.index.values.shape:
                 for j in range(similarity_score.shape[0]):
                     movies['estimations'] += similarity_score[:, 1][j]
