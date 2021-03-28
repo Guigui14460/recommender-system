@@ -176,7 +176,7 @@ class ContentBasedRecommender(Recommender):
             try:
                 directors_indices.append(tf.get_feature_names().index(i))
             except:
-                print(i)
+                print("Director not found :", i)
         matrix[:, directors_indices] *= 3
         print("Directors weights computed")
 
@@ -185,7 +185,7 @@ class ContentBasedRecommender(Recommender):
             try:
                 keywords_indices.append(tf.get_feature_names().index(i))
             except:
-                print(i)
+                print("Keyword not found :", i)
         matrix[:, keywords_indices] *= 10
         print("Keywords weights computed")
 
@@ -194,7 +194,7 @@ class ContentBasedRecommender(Recommender):
             try:
                 cast_indices.append(tf.get_feature_names().index(i))
             except:
-                print(i)
+                print("Cast not found :", i)
         matrix[:, cast_indices] *= 3
         print("Casts weights computed")
 

@@ -17,7 +17,6 @@ class CategoricalRecommender(Recommender):
         """
         super().__init__()
         self.data = self.__compute_genres(data.movies)
-        print(self.data.shape)
 
     def recommend(self, genre: str, percentile: float = .9, nrows: int = None, **kwargs) -> pd.DataFrame:
         """Recommends a list of movies.

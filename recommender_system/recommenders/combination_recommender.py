@@ -1,5 +1,4 @@
 from typing import Union
-import numpy as np
 import pandas as pd
 
 from recommender_system.data_processor.process_data import ProcessData
@@ -49,7 +48,6 @@ class CombinationRecommender(Recommender):
             the recommended movies in a dataframe or a series
         """
         ratings = self.data.get_ratings_by_user_id(user_id)
-        #print(ratings[['title', 'rating']])
         df_content_based_recommender = self.content_based_recommender.recommend(
             user_id, ratings=ratings)
         df_collaborative_filtering = self.collaborative_filtering_recommender.recommend(
