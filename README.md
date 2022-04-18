@@ -68,7 +68,7 @@ $ pipenv --rm
 
 ## Authors
 - [KASSA Rina](https://github.com/rinakassa7)
-- [OUNESLI Melissa](https://github.com/Melissa-Ou)
+- [OUNESLI Melissa](https://github.com/melounesli)
 - [URAZOV Zhandos](https://github.com/zhandu)
 - [LETELLIER Guillaume](https://github.com/Guigui14460)
 
